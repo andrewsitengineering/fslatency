@@ -19,12 +19,10 @@ amiatt a riasztások (amit a data processor ad ki magából) nem használhatnak 
 Hasonlóan, a monitoring agent és a data processor között is csak diskless kommunikáció lehet. Technikailag ez UDP-t jelent.
 A monitoring agent csak attól a diszktől függjön, amit éppen mér. Ne legyen menet közbeni konfigolvasás sem semmi egyéb open().
 
-Ezek miatt a monitorozo agent C-ben írt, statikusra fordított monolit program.
-A data processor lehetne más. Azonban a data processornak olyan helyen kell futnia,
-ami oprendszer nem függ a monitorozott diszkalrendszertől, így ez nálunk a fizikai tűzfalak;
-ami szintén maga után vonja, hogy statikusra fordított monolitikus program kell, hogy legyen.
+Ezek miatt a monitorozo agent C-ben írt, statikusra linkelt monolit program.
+A data processor lehetne más. Azonban a data processornak olyan helyen kell futnia, ami oprendszer nem függ a monitorozott diszkalrendszertől. Ez esetkeg csak egy kis célszámítógép.
+Ami szintén maga után vonja, hogy statikusra linkelt monolitikus program kell, hogy legyen.
 Nem lehet a névfeloldást statikusra fordítani (libc-dependent) emiatt nincs névfeloldás: IP címet kell megadni.
-
 
 ### monitoring agent
 
@@ -74,8 +72,8 @@ Ahol is
 - --rollingwindow Integer, másodperc/darab. Maximum csomagnyi adatból végezze a statisztikai riasztást. Default: 60.
 - --minimummeasurementcount Integer, darab. Minimum ennyi mérésnek kell meglennie, hogy a statisztikai riasztó jelezzen. Default: 60 mérés (cca 5-6 sec)
 - --graphitebase String. Ha meg van adva, akkor gatewayként elküldi egy graphite szervernek az adatokat olyan outputot ad graphite(carbon) plaintext input formában.
-- --graphiteip 1.2.3.4 az IP címe a graphite szrevernek (no default). Csak akkor veszi figyelembe, ha --graphitebase nem nulla.
-- --graphiteport 2003. A graphite szrever plaintex inputjának tcp portja. Default: 2003.
+- --graphiteip 1.2.3.4 az IP címe a graphite szervernek (no default). Csak akkor veszi figyelembe, ha --graphitebase nem nulla.
+- --graphiteport 2003. A graphite szerver plaintex inputjának tcp portja. Default: 2003.
 - --nomemlock Nem lockolja be a memóriába a processz lapjait. Default: belockolja.
 - --debug some global debug info, no flood
 - --debug=2 additional debug for each packet
@@ -98,8 +96,8 @@ Nem riasztási események, amikre lekezel, de nem jelez:
 
 Riasztások (legelső ilyen jön ki), majd "riasztás van" állapotba kerül a data processor
 
-- agent nem küldöt csomagot (udptimeout letelt az utolsó csomag óta) "agent lost"
-- agent küldöt csomagot, de abban 0 mérés van (nem tudott mérni) "stuck"
+- agent nem küldött csomagot (udptimeout letelt az utolsó csomag óta) "agent lost"
+- agent küldött csomagot, de abban 0 mérés van (nem tudott mérni) "stuck"
 - agent küldött mérést, azonban az irreális (nagyon meghaladja a korábbiakból várató értéket) "bad latency" ebből külön LOW és HIGH
 
 Státusz
