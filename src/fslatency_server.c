@@ -916,7 +916,7 @@ void * graphite_loop(void *arg)
                 continue;
             }
             if( opt.debug >1){
-                dprintf(2, "DEBUG graphite connection established to %s:%u via fd=%d\n", 
+                dprintf(2, "DEBUG graphite connection established to %s:%u via fd=%d\n",
                     inet_ntoa(opt.graphiteaddr.sin_addr), ntohs(opt.graphiteaddr.sin_port), gfd);
             }
         }else{
