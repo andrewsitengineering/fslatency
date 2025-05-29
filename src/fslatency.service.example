@@ -1,0 +1,25 @@
+# -maulis- 2025.2.6
+############################################################################################
+# If this unit file is disabled, you have to give the full path to enable it.
+# For example:
+#    systemctl enable /var/lib/fslatency/fslatency.service
+#
+############################################################################################
+
+[Unit]
+Description=filesystem latency measuring agent
+After=network-online.target
+ConditionPathExists=/var/lib/fslatency/
+
+[Service]
+WorkingDirectory=/var/lib/fslatency/
+StandardOutput=syslog
+StandardError=syslog
+User=65534
+Group=65534
+ExecStart=/var/lib/fslatency/fslatency --serverip <SERVER_IP> --file /var/lib/fslatency/fslatencytestfile.txt --nomemlock
+RestartSec=2s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
